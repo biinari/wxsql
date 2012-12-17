@@ -46,13 +46,21 @@ class DatabasesFrame(wx.Frame):
         wx.Frame.__init__(self, *args, **kwargs)
         self.__tree = DatabasesTree(self, size=(200, 400),
                                     style=wx.TR_HIDE_ROOT | wx.TR_DEFAULT_STYLE)
+        self.__display = wx.StaticText(self)
 
-        vbox = wx.BoxSizer(wx.VERTICAL)
-        vbox.Add(self.__tree, 0, wx.EXPAND)
-        self.SetSizer(vbox)
+        self.__tree.Bind(wx.EVT_TREE_SEL_CHANGED, self.OnSelChanged)
+
+        hbox = wx.BoxSizer(wx.HORIZONTAL)
+        hbox.Add(self.__tree, 1, wx.EXPAND)
+        hbox.Add(self.__display, 1, wx.EXPAND | wx.TOP | wx.LEFT, 10)
+        self.SetSizer(hbox)
+        self.Centre()
+
+    def OnSelChanged(self, event):
+        self.__display.SetLabel(self.__tree.GetItemText(event.GetItem()))
 
 if __name__ == "__main__":
     app = wx.App(False)
-    frame = DatabasesFrame(None)
+    frame = DatabasesFrame(None, size=(600, 450))
     frame.Show(True)
     app.MainLoop()
