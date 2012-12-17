@@ -29,6 +29,9 @@ class DatabasesTree(wx.TreeCtrl):
             item = self.AppendItem(self.__root, database)
             self.SetItemHasChildren(item)
 
+    def IsDatabase(self, item):
+        return self.GetItemParent(item) == self.__root
+
     def OnExpandItem(self, event):
         for table in self.__db.getTables(self.GetItemText(event.GetItem())):
             self.AppendItem(event.GetItem(), table)
