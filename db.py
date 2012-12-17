@@ -17,10 +17,10 @@ class DB(object):
         cur.close()
         return [i[0] for i in r]
 
-    def getTables(self, db_name=None):
+    def getTables(self, database=None):
         cur = self.conn.cursor()
-        if db_name != None:
-            cur.execute("SHOW TABLES FROM `%s`" % db_name)
+        if database != None:
+            cur.execute("SHOW TABLES FROM `%s`" % database)
         else:
             cur.execute("SHOW TABLES")
         r = cur.fetchall()
@@ -29,6 +29,11 @@ class DB(object):
 
     def escape(self, obj):
         return self.conn.escape(obj)
+    
+    def selectDatabase(self, database):
+        cur = self.conn.cursor()
+        cur.execute("USE `%s`" % database)
+        cur.close()
 
     def __del__(self):
         self.conn.close()
