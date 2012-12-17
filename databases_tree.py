@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import wx
-import db
+from db import DB
 
 class DatabasesTree(wx.TreeCtrl):
 
@@ -9,12 +9,16 @@ class DatabasesTree(wx.TreeCtrl):
 
     """ List of databases """
     def __init__(self, *args, **kwargs):
+        db = kwargs.pop('db')
         wx.TreeCtrl.__init__(self, *args, **kwargs)
 
         self.Bind(wx.EVT_TREE_ITEM_EXPANDING, self.OnExpandItem)
         self.Bind(wx.EVT_TREE_ITEM_COLLAPSING, self.OnCollapseItem)
 
-        self.__db = db.DB()
+        if db != None:
+            self.__db = db
+        else:
+            self.__db = DB()
         
         self.__root = self.AddRoot(self.__db.conn.host)
         self.SetItemHasChildren(self.__root)
