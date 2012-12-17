@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 import wx
 
+from databases_tree import DatabasesTree
+
 class MainWindow(wx.Frame):
 
     """ Main Window Frame for wxSQL """
@@ -12,6 +14,9 @@ class MainWindow(wx.Frame):
 
     def CreateFrames(self):
         grid = wx.GridBagSizer(5, 5)
+        self.databasesTree = DatabasesTree(self, size=(200, 400),
+                style=wx.TR_HIDE_ROOT|wx.TR_DEFAULT_STYLE)
+        grid.Add(self.databasesTree, (0, 0))
         self.SetSizer(grid)
         self.Centre()
 
