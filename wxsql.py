@@ -3,6 +3,7 @@ import wx
 
 from db import DB
 from databases_tree import DatabasesTree
+from query_editor import QueryEditorPanel
 
 class MainWindow(wx.Frame):
 
@@ -15,17 +16,21 @@ class MainWindow(wx.Frame):
         self.Show(True)
 
     def CreateFrames(self):
-        grid = wx.GridBagSizer(0, 0)
+        grid = wx.GridBagSizer(1, 1)
         self.databasesTree = DatabasesTree(self, db=self._db, size=(200, 400),
                 style=wx.TR_HIDE_ROOT|wx.TR_DEFAULT_STYLE)
-        self.display = wx.StaticText(self, label="Select a database on the left")
+        self.queryEditor = QueryEditorPanel(self)
+        self.display = wx.StaticText(self, label="Select a database above")
 
         self.databasesTree.Bind(wx.EVT_TREE_SEL_CHANGED, self.OnDBSelChanged)
 
         grid.Add(self.databasesTree, (0, 0))
-        grid.Add(self.display, (0, 1), flag=wx.TOP | wx.LEFT, border=10)
+        grid.Add(self.queryEditor, (0, 1), flag=wx.EXPAND)
+        grid.Add(self.display, (1, 0), flag=wx.TOP | wx.LEFT, border=10)
+
         self.SetSizer(grid)
-        self.Centre()
+        self.SetAutoLayout(True)
+        self.Layout()
 
     """ Setup menu bar. """
     def CreateMenu(self):
