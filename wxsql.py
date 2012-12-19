@@ -9,7 +9,8 @@ class MainWindow(wx.Frame):
 
     """ Main Window Frame for wxSQL """
     def __init__(self, parent, title):
-        wx.Frame.__init__(self, parent, title=title, size=(610, 550))
+        wx.Frame.__init__(self, parent, title=title)
+        self.SetClientSize((600, 450))
         self._db = DB()
         self.CreateFrames()
         self.CreateMenu()
