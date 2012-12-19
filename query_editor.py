@@ -21,13 +21,9 @@ class QueryEditorPanel(wx.Panel):
         editor = QueryEditorCtrl(self, size=(600,400), style=wx.TE_MULTILINE)
         vbox.Add(editor, 0, wx.EXPAND)
 
-class QueryEditorFrame(wx.Frame):
-    def __init__(self, *args, **kwargs):
-        wx.Frame.__init__(self, *args, **kwargs)
-        panel = QueryEditorPanel(self)
-        self.Show(True)
-
 if __name__ == "__main__":
     app = wx.App(False)
-    frame = QueryEditorFrame(None, title="Query Editor", size=(600, 400))
+    frame = wx.Frame(None, title="Query Editor", size=(600, 400))
+    panel = QueryEditorPanel(frame)
+    frame.Show(True)
     app.MainLoop()
