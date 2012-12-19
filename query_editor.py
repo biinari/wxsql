@@ -14,12 +14,14 @@ class QueryEditorPanel(wx.Panel):
     def __init__(self, *args, **kwargs):
         wx.Panel.__init__(self, *args, **kwargs)
         self.CreateWidgets()
-        self.Show(True)
 
     def CreateWidgets(self):
         vbox = wx.BoxSizer(wx.VERTICAL)
-        editor = QueryEditorCtrl(self, size=(600,400), style=wx.TE_MULTILINE)
-        vbox.Add(editor, 0, wx.EXPAND)
+        editor = QueryEditorCtrl(self, style=wx.TE_MULTILINE)
+        vbox.Add(editor, 1, wx.EXPAND)
+        self.SetAutoLayout(True)
+        self.SetSizer(vbox)
+        self.Layout()
 
 if __name__ == "__main__":
     app = wx.App(False)
