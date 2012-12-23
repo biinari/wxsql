@@ -17,21 +17,19 @@ class MainWindow(wx.Frame):
         self.Show(True)
 
     def CreateFrames(self):
-        grid = wx.GridBagSizer(1, 1)
-        self.databasesTree = DatabasesTree(self, db=self._db, size=(200, 400),
+        horizSplitter = wx.SplitterWindow(self, style=wx.SP_3D)
+        horizSplitter.SetMinimumPaneSize(20)
+        leftVSplitter = wx.SplitterWindow(horizSplitter, style=wx.SP_3D)
+        leftVSplitter.SetMinimumPaneSize(20)
+        self.databasesTree = DatabasesTree(leftVSplitter, db=self._db, size=(200, 300),
                 style=wx.TR_HIDE_ROOT|wx.TR_DEFAULT_STYLE)
-        self.queryEditor = QueryEditorPanel(self)
-        self.display = wx.StaticText(self, label="Select a database above")
+        self.queryEditor = QueryEditorPanel(horizSplitter)
+        self.display = wx.StaticText(leftVSplitter, label="Select a database above")
 
         self.databasesTree.Bind(wx.EVT_TREE_SEL_CHANGED, self.OnDBSelChanged)
 
-        grid.Add(self.databasesTree, (0, 0))
-        grid.Add(self.queryEditor, (0, 1), flag=wx.EXPAND)
-        grid.Add(self.display, (1, 0), flag=wx.TOP | wx.LEFT, border=10)
-
-        self.SetSizer(grid)
-        self.SetAutoLayout(True)
-        self.Layout()
+        leftVSplitter.SplitHorizontally(self.databasesTree, self.display)
+        horizSplitter.SplitVertically(leftVSplitter, self.queryEditor)
 
     """ Setup menu bar. """
     def CreateMenu(self):
