@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import wx
-from db import DB
+from app.db.mysql import DB
 
 class DatabasesTree(wx.TreeCtrl):
 

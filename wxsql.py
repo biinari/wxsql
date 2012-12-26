@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import wx
 
-from db import DB
+from app.db.mysql import DB
 from databases_tree import DatabasesTree
 from query_editor import QueryEditorPanel
 
