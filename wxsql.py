@@ -21,10 +21,11 @@ class MainWindow(wx.Frame):
         horizSplitter.SetMinimumPaneSize(20)
         leftVSplitter = wx.SplitterWindow(horizSplitter, style=wx.SP_3D)
         leftVSplitter.SetMinimumPaneSize(20)
-        self.databasesTree = DatabasesTree(leftVSplitter, db=self._db, size=(200, 300),
-                style=wx.TR_HIDE_ROOT|wx.TR_DEFAULT_STYLE)
+        self.databasesTree = DatabasesTree(leftVSplitter, db=self._db,
+                size=(200, 300), style=wx.TR_HIDE_ROOT|wx.TR_DEFAULT_STYLE)
         self.queryEditor = QueryEditorPanel(horizSplitter)
-        self.display = wx.StaticText(leftVSplitter, label="Select a database above")
+        self.display = wx.StaticText(leftVSplitter,
+                label="Select a database above")
 
         self.databasesTree.Bind(wx.EVT_TREE_SEL_CHANGED, self.OnDBSelChanged)
 
