@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 import wx
 
-from app.db.mysql import DB
-from databases_tree import DatabasesTree
-from query_editor import QueryEditorPanel
+from .app.db.mysql import DB
+from .databases_tree import DatabasesTree
+from .query_editor import QueryEditorPanel
 
 class MainWindow(wx.Frame):
 
