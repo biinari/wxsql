@@ -57,7 +57,6 @@ class Config (object):
 def main():
     """ Sanity test for loading database settings. """
     config = Config()
-    print config._config_dir
     config.load('database')
     print config.database
 
