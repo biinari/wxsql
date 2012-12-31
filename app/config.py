@@ -11,7 +11,6 @@ class Config (object):
     """ Configuration settings manager """
 
     _config_dir = None
-    """ Directory containing config files """
 
     __instance = None
 
