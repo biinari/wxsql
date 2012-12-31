@@ -50,10 +50,10 @@ class Config (object):
         try:
             self.load(name)
             return getattr(self, name)
-        except IOError, e:
-            print e
-        except yaml.YAMLError, e:
-            print e
+        except IOError, exc:
+            print exc
+        except yaml.YAMLError, exc:
+            print exc
 
 def main():
     """ Sanity test for loading database settings. """
