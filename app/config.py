@@ -31,15 +31,15 @@ class Config (object):
 
     """ Load config from given yaml file name in config/ """
     def load(self, name):
-        file_handle = file(self._getFileName(name), 'r')
+        file_handle = file(self._get_file_name(name), 'r')
         setattr(self, name, yaml.load(file_handle, Loader=Loader))
 
     def dump(self, name):
-        file_handle = file(self._getFileName(name), 'w')
+        file_handle = file(self._get_file_name(name), 'w')
         yaml.dump(getattr(self, name), file_handle, Dumper=Dumper,
                   default_flow_style=False)
 
-    def _getFileName(self, name):
+    def _get_file_name(self, name):
         return os.path.join(self._config_dir, '{}.yml'.format(name))
 
     def __getattr__(self, name):

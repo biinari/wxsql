@@ -13,9 +13,9 @@ class QueryEditorPanel(wx.Panel):
     """ SQL Query Editor Panel """
     def __init__(self, *args, **kwargs):
         wx.Panel.__init__(self, *args, **kwargs)
-        self.CreateWidgets()
+        self.create_widgets()
 
-    def CreateWidgets(self):
+    def create_widgets(self):
         vbox = wx.BoxSizer(wx.VERTICAL)
         editor = QueryEditorCtrl(self, style=wx.TE_MULTILINE)
         vbox.Add(editor, 1, wx.EXPAND)

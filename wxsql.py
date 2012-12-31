@@ -15,11 +15,11 @@ class MainWindow(wx.Frame):
         wx.Frame.__init__(self, parent, title=title)
         self.SetClientSize((600, 450))
         self._db = DB()
-        self.CreateFrames()
-        self.CreateMenu()
+        self.create_panels()
+        self.create_menu()
         self.Show(True)
 
-    def CreateFrames(self):
+    def create_panels(self):
         """ Layout user resizable panels """
         horiz_split = wx.SplitterWindow(self, style=wx.SP_3D)
         horiz_split.SetMinimumPaneSize(20)
@@ -31,12 +31,12 @@ class MainWindow(wx.Frame):
         self.display = wx.StaticText(left_vert_split,
                 label="Select a database above")
 
-        self.databases_tree.Bind(wx.EVT_TREE_SEL_CHANGED, self.OnDBSelChanged)
+        self.databases_tree.Bind(wx.EVT_TREE_SEL_CHANGED, self.on_db_sel_change)
 
         left_vert_split.SplitHorizontally(self.databases_tree, self.display)
         horiz_split.SplitVertically(left_vert_split, self.query_editor)
 
-    def CreateMenu(self):
+    def create_menu(self):
         """ Setup menu bar. """
         file_menu = wx.Menu()
         menu_exit = file_menu.Append(wx.ID_EXIT, "E&xit", "Quit")
@@ -49,10 +49,10 @@ class MainWindow(wx.Frame):
         menu_bar.Append(help_menu, "&Help")
 
         self.SetMenuBar(menu_bar)
-        self.Bind(wx.EVT_MENU, self.OnExit, menu_exit)
-        self.Bind(wx.EVT_MENU, self.OnAbout, menu_about)
+        self.Bind(wx.EVT_MENU, self.on_exit, menu_exit)
+        self.Bind(wx.EVT_MENU, self.on_about, menu_about)
 
-    def OnAbout(self, event):
+    def on_about(self, event):
         """ Show About dialog """
         about = wx.MessageDialog(
             self,
@@ -62,7 +62,7 @@ class MainWindow(wx.Frame):
         about.ShowModal()
         about.Destroy()
 
-    def OnDBSelChanged(self, event):
+    def on_db_sel_change(self, event):
         """ Database tree selection changed """
         item = event.GetItem()
         text = self.databases_tree.GetItemText(item)
@@ -72,7 +72,7 @@ class MainWindow(wx.Frame):
         else:
             self.display.SetLabel("table: %s" % text)
 
-    def OnExit(self, event):
+    def on_exit(self, event):
         """ Exit application """
         self.Close(True)
 

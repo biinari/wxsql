@@ -12,8 +12,8 @@ class DatabasesTree(wx.TreeCtrl):
         db = kwargs.pop('db')
         wx.TreeCtrl.__init__(self, *args, **kwargs)
 
-        self.Bind(wx.EVT_TREE_ITEM_EXPANDING, self.OnExpandItem)
-        self.Bind(wx.EVT_TREE_ITEM_COLLAPSING, self.OnCollapseItem)
+        self.Bind(wx.EVT_TREE_ITEM_EXPANDING, self.on_expand_item)
+        self.Bind(wx.EVT_TREE_ITEM_COLLAPSING, self.on_collapse_item)
 
         if db != None:
             self.__db = db
@@ -22,21 +22,21 @@ class DatabasesTree(wx.TreeCtrl):
         
         self.__root = self.AddRoot(self.__db.conn.host)
         self.SetItemHasChildren(self.__root)
-        self.SetDatabaseItems()
+        self.set_database_items()
 
-    def SetDatabaseItems(self):
+    def set_database_items(self):
         for database in self.__db.getDatabases():
             item = self.AppendItem(self.__root, database)
             self.SetItemHasChildren(item)
 
-    def IsDatabase(self, item):
+    def is_database(self, item):
         return self.GetItemParent(item) == self.__root
 
-    def OnExpandItem(self, event):
+    def on_expand_item(self, event):
         for table in self.__db.getTables(self.GetItemText(event.GetItem())):
             self.AppendItem(event.GetItem(), table)
 
-    def OnCollapseItem(self, event):
+    def on_collapse_item(self, event):
         # self.CollapseAndReset below may cause another
         # wx.EVT_TREE_ITEM_COLLAPSING event to be triggered.
         if self.__collapsing:
@@ -55,7 +55,7 @@ class DatabasesFrame(wx.Frame):
                                     style=wx.TR_HIDE_ROOT | wx.TR_DEFAULT_STYLE)
         self.__display = wx.StaticText(self)
 
-        self.__tree.Bind(wx.EVT_TREE_SEL_CHANGED, self.OnSelChanged)
+        self.__tree.Bind(wx.EVT_TREE_SEL_CHANGED, self.on_sel_changed)
 
         hbox = wx.BoxSizer(wx.HORIZONTAL)
         hbox.Add(self.__tree, 1, wx.EXPAND)
@@ -63,7 +63,7 @@ class DatabasesFrame(wx.Frame):
         self.SetSizer(hbox)
         self.Centre()
 
-    def OnSelChanged(self, event):
+    def on_sel_changed(self, event):
         self.__display.SetLabel(self.__tree.GetItemText(event.GetItem()))
 
 if __name__ == "__main__":
