@@ -27,9 +27,12 @@ class QueryEditorPanel(wx.Panel):
         self.SetSizer(vbox)
         self.Layout()
 
-if __name__ == "__main__":
+def main():
     app = wx.App(False)
     frame = wx.Frame(None, title="Query Editor", size=(600, 400))
     panel = QueryEditorPanel(frame)
     frame.Show(True)
     app.MainLoop()
+
+if __name__ == "__main__":
+    main()

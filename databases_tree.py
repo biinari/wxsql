@@ -85,8 +85,11 @@ class DatabasesFrame(wx.Frame):
         """ Display selected item in static text object. """
         self.__display.SetLabel(self.__tree.GetItemText(event.GetItem()))
 
-if __name__ == "__main__":
+def main():
     app = wx.App(False)
     frame = DatabasesFrame(None, size=(600, 450))
     frame.Show(True)
     app.MainLoop()
+
+if __name__ == "__main__":
+    main()
