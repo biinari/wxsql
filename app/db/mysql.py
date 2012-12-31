@@ -10,14 +10,14 @@ class DB(object):
     def connect(self, *args, **kwargs):
         self.conn = pymysql.connect(*args, **kwargs)
 
-    def getDatabases(self):
+    def get_databases(self):
         cur = self.conn.cursor()
         cur.execute("SHOW DATABASES")
         r = cur.fetchall()
         cur.close()
         return [i[0] for i in r]
 
-    def getTables(self, database=None):
+    def get_tables(self, database=None):
         cur = self.conn.cursor()
         if database != None:
             cur.execute("SHOW TABLES FROM `%s`" % database)
@@ -30,7 +30,7 @@ class DB(object):
     def escape(self, obj):
         return self.conn.escape(obj)
     
-    def selectDatabase(self, database):
+    def select_database(self, database):
         cur = self.conn.cursor()
         cur.execute("USE `%s`" % database)
         cur.close()
@@ -40,7 +40,7 @@ class DB(object):
 
 def main():
     db = DB()
-    print db.getDatabases()
+    print db.get_databases()
 
 if __name__ == '__main__':
     main()

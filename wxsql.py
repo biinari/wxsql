@@ -67,7 +67,7 @@ class MainWindow(wx.Frame):
         item = event.GetItem()
         text = self.databases_tree.GetItemText(item)
         if self.databases_tree.IsDatabase(item):
-            self._db.selectDatabase(text)
+            self._db.select_database(text)
             self.display.SetLabel("db: %s" % text)
         else:
             self.display.SetLabel("table: %s" % text)

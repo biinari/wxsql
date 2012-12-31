@@ -25,7 +25,7 @@ class DatabasesTree(wx.TreeCtrl):
         self.set_database_items()
 
     def set_database_items(self):
-        for database in self.__db.getDatabases():
+        for database in self.__db.get_databases():
             item = self.AppendItem(self.__root, database)
             self.SetItemHasChildren(item)
 
@@ -33,7 +33,7 @@ class DatabasesTree(wx.TreeCtrl):
         return self.GetItemParent(item) == self.__root
 
     def on_expand_item(self, event):
-        for table in self.__db.getTables(self.GetItemText(event.GetItem())):
+        for table in self.__db.get_tables(self.GetItemText(event.GetItem())):
             self.AppendItem(event.GetItem(), table)
 
     def on_collapse_item(self, event):
