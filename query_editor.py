@@ -1,21 +1,25 @@
 #!/usr/bin/env python
+""" MySQL Query Editor control. """
 
 import wx
 
 class QueryEditorCtrl(wx.TextCtrl):
+    """ MySQL Query Editor control. """
 
-    """ SQL Query Editor Control """
     def __init__(self, *args, **kwargs):
+        """ Create MySQL Query Editor Control """
         wx.TextCtrl.__init__(self, *args, **kwargs)
 
 class QueryEditorPanel(wx.Panel):
+    """ MySQL Query Editor panel """
 
-    """ SQL Query Editor Panel """
     def __init__(self, *args, **kwargs):
+        """ Create MySQL Query Editor panel. """
         wx.Panel.__init__(self, *args, **kwargs)
         self.create_widgets()
 
     def create_widgets(self):
+        """ Add and layout widgets. """
         vbox = wx.BoxSizer(wx.VERTICAL)
         editor = QueryEditorCtrl(self, style=wx.TE_MULTILINE)
         vbox.Add(editor, 1, wx.EXPAND)

@@ -1,14 +1,25 @@
 #!/usr/bin/env python
+"""
+Tree of database structure.
+
+Tree structure will contain the following nested levels of items:
+
+    Database:
+        Table:
+            Columns:
+            Indexes:
+"""
 
 import wx
 from app.db.mysql import DB
 
 class DatabasesTree(wx.TreeCtrl):
+    """ Tree of database structure. """
 
     __collapsing = False
 
-    """ List of databases """
     def __init__(self, *args, **kwargs):
+        """ Construct Database structure tree. """
         db = kwargs.pop('db')
         wx.TreeCtrl.__init__(self, *args, **kwargs)
 
@@ -25,18 +36,22 @@ class DatabasesTree(wx.TreeCtrl):
         self.set_database_items()
 
     def set_database_items(self):
+        """ Populate database names. """
         for database in self.__db.get_databases():
             item = self.AppendItem(self.__root, database)
             self.SetItemHasChildren(item)
 
     def is_database(self, item):
+        """ Return True if selected item is at database level. """
         return self.GetItemParent(item) == self.__root
 
     def on_expand_item(self, event):
+        """ Expand an item, populating its children. """
         for table in self.__db.get_tables(self.GetItemText(event.GetItem())):
             self.AppendItem(event.GetItem(), table)
 
     def on_collapse_item(self, event):
+        """ Collapse an item and reset its children. """
         # self.CollapseAndReset below may cause another
         # wx.EVT_TREE_ITEM_COLLAPSING event to be triggered.
         if self.__collapsing:
@@ -49,7 +64,10 @@ class DatabasesTree(wx.TreeCtrl):
             self.__collapsing = False
 
 class DatabasesFrame(wx.Frame):
+    """ Test frame for database structure tree. """
+
     def __init__(self, *args, **kwargs):
+        """ Create test frame for database structure tree. """
         wx.Frame.__init__(self, *args, **kwargs)
         self.__tree = DatabasesTree(self, size=(200, 400),
                                     style=wx.TR_HIDE_ROOT | wx.TR_DEFAULT_STYLE)
@@ -64,6 +82,7 @@ class DatabasesFrame(wx.Frame):
         self.Centre()
 
     def on_sel_changed(self, event):
+        """ Display selected item in static text object. """
         self.__display.SetLabel(self.__tree.GetItemText(event.GetItem()))
 
 if __name__ == "__main__":
