@@ -53,6 +53,7 @@ class Config (object):
 
 def main():
     config = Config()
+    print config._config_dir
     config.load('database')
     print config.database
 
