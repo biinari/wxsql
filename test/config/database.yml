@@ -1,0 +1,8 @@
+default: &defaults
+  adapter: mysql
+  encoding: utf8
+  username: root
+  password:
+
+local:
+  <<: *defaults
