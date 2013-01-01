@@ -51,11 +51,16 @@ class DatabasesTree(wx.TreeCtrl):
     def is_tables_container(self, item):
         """ Return True if item is a tables container. """
         return self.GetItemText(item) == 'Tables' and \
-            self.is_database(self.GetItemParent(item))
+                self.is_database(self.GetItemParent(item))
 
     def is_table(self, item):
         """ Return True if item is a table. """
         return self.is_tables_container(self.GetItemParent(item))
+
+    def is_columns_container(self, item):
+        """ Return True if item is a columns container. """
+        return self.GetItemText(item) == 'Columns' and \
+                self.is_table(self.GetItemParent(item))
 
     def expand_tables(self, item):
         database_name = self.GetItemText(self.GetItemParent(item))
@@ -66,11 +71,21 @@ class DatabasesTree(wx.TreeCtrl):
                 container = self.AppendItem(table, container_name)
                 self.SetItemHasChildren(container)
 
+    def expand_columns(self, item):
+        table = self.GetItemParent(item)
+        database = self.GetItemParent(self.GetItemParent(table))
+        table_name = self.GetItemText(table)
+        database_name = self.GetItemText(database)
+        for column_name in self.__db.get_columns(database_name, table_name):
+            self.AppendItem(item, column_name)
+
     def on_expand_item(self, event):
         """ Expand an item, populating its children. """
         item = event.GetItem()
         if self.is_tables_container(item):
             self.expand_tables(item)
+        elif self.is_columns_container(item):
+            self.expand_columns(item)
 
     def on_collapse_item(self, event):
         """ Collapse an item and reset its children. """
