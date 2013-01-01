@@ -34,10 +34,21 @@ class DB(object):
         cur.close()
         return [i[0] for i in r]
 
+    def get_columns(self, database=None, table=None):
+        """ Return a list of column names in database.table. """
+        cur = self.conn.cursor()
+        if database != None:
+            cur.execute("SHOW COLUMNS FROM `%s`.`%s`" % (database, table))
+        else:
+            cur.execute("SHOW COLUMNS FROM `%s`" % table)
+        r = cur.fetchall()
+        cur.close();
+        return [i[0] for i in r]
+
     def escape(self, obj):
         """ Escape an object for use in an SQL query. """
         return self.conn.escape(obj)
-    
+
     def select_database(self, database):
         """ Select a database schema. """
         cur = self.conn.cursor()
