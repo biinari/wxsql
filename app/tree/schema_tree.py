@@ -25,6 +25,7 @@ class SchemaTree(wx.TreeCtrl):
 
         self.Bind(wx.EVT_TREE_ITEM_EXPANDING, self.on_expand_item)
         self.Bind(wx.EVT_TREE_ITEM_COLLAPSING, self.on_collapse_item)
+        self.Bind(wx.EVT_KEY_DOWN, self.on_key)
 
         if db != None:
             self.__db = db
@@ -107,6 +108,18 @@ class SchemaTree(wx.TreeCtrl):
             self.CollapseAndReset(item)
             self.SetItemHasChildren(item)
             self.__collapsing = False
+
+    def on_key(self, event):
+        """ On <Left>, if the current item is expanded, collapse it. """
+        key = event.GetKeyCode()
+
+        if key == wx.WXK_LEFT:
+            item = self.GetSelection()
+            if self.IsExpanded(item):
+                self.Collapse(item)
+                return
+
+        event.Skip()
 
 class SchemaTreeFrame(wx.Frame):
     """ Test frame for database structure tree. """
