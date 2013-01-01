@@ -4,7 +4,7 @@
 import wx
 
 from app.db.mysql import DB
-from databases_tree import DatabasesTree
+from app.tree.schema_tree import SchemaTree
 from query_editor import QueryEditorPanel
 
 class MainWindow(wx.Frame):
@@ -25,15 +25,15 @@ class MainWindow(wx.Frame):
         horiz_split.SetMinimumPaneSize(20)
         left_vert_split = wx.SplitterWindow(horiz_split, style=wx.SP_3D)
         left_vert_split.SetMinimumPaneSize(20)
-        self.databases_tree = DatabasesTree(left_vert_split, db=self._db,
+        self.schema_tree = SchemaTree(left_vert_split, db=self._db,
                 size=(200, 300), style=wx.TR_HIDE_ROOT|wx.TR_DEFAULT_STYLE)
         self.query_editor = QueryEditorPanel(horiz_split)
         self.display = wx.StaticText(left_vert_split,
                 label="Select a database above")
 
-        self.databases_tree.Bind(wx.EVT_TREE_SEL_CHANGED, self.on_db_sel_change)
+        self.schema_tree.Bind(wx.EVT_TREE_SEL_CHANGED, self.on_db_sel_change)
 
-        left_vert_split.SplitHorizontally(self.databases_tree, self.display)
+        left_vert_split.SplitHorizontally(self.schema_tree, self.display)
         horiz_split.SplitVertically(left_vert_split, self.query_editor)
 
     def create_menu(self):
@@ -65,11 +65,11 @@ class MainWindow(wx.Frame):
     def on_db_sel_change(self, event):
         """ Database tree selection changed """
         item = event.GetItem()
-        text = self.databases_tree.GetItemText(item)
-        if self.databases_tree.is_database(item):
+        text = self.schema_tree.GetItemText(item)
+        if self.schema_tree.is_database(item):
             self._db.select_database(text)
             self.display.SetLabel("db: %s" % text)
-        elif self.databases_tree.is_table(item):
+        elif self.schema_tree.is_table(item):
             self.display.SetLabel("table: %s" % text)
 
     def on_exit(self, event):

@@ -13,13 +13,13 @@ Tree structure will contain the following nested levels of items:
 import wx
 from app.db.mysql import DB
 
-class DatabasesTree(wx.TreeCtrl):
-    """ Tree of database structure. """
+class SchemaTree(wx.TreeCtrl):
+    """ Tree of database schema structure. """
 
     __collapsing = False
 
     def __init__(self, *args, **kwargs):
-        """ Construct Database structure tree. """
+        """ Construct Schema tree. """
         db = kwargs.pop('db')
         wx.TreeCtrl.__init__(self, *args, **kwargs)
 
@@ -100,13 +100,13 @@ class DatabasesTree(wx.TreeCtrl):
             self.SetItemHasChildren(item)
             self.__collapsing = False
 
-class DatabasesFrame(wx.Frame):
+class SchemaTreeFrame(wx.Frame):
     """ Test frame for database structure tree. """
 
     def __init__(self, *args, **kwargs):
         """ Create test frame for database structure tree. """
         wx.Frame.__init__(self, *args, **kwargs)
-        self.__tree = DatabasesTree(self, size=(200, 400),
+        self.__tree = SchemaTree(self, size=(200, 400),
                                     style=wx.TR_HIDE_ROOT | wx.TR_DEFAULT_STYLE)
         self.__display = wx.StaticText(self)
 
@@ -124,7 +124,7 @@ class DatabasesFrame(wx.Frame):
 
 def main():
     app = wx.App(False)
-    frame = DatabasesFrame(None, size=(600, 450))
+    frame = SchemaTreeFrame(None, size=(600, 450))
     frame.Show(True)
     app.MainLoop()
 
