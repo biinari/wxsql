@@ -66,10 +66,10 @@ class MainWindow(wx.Frame):
         """ Database tree selection changed """
         item = event.GetItem()
         text = self.databases_tree.GetItemText(item)
-        if self.databases_tree.IsDatabase(item):
+        if self.databases_tree.is_database(item):
             self._db.select_database(text)
             self.display.SetLabel("db: %s" % text)
-        else:
+        elif self.databases_tree.is_table(item):
             self.display.SetLabel("table: %s" % text)
 
     def on_exit(self, event):
