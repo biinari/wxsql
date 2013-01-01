@@ -66,11 +66,16 @@ class MainWindow(wx.Frame):
         """ Database tree selection changed """
         item = event.GetItem()
         text = self.schema_tree.GetItemText(item)
-        if self.schema_tree.is_database(item):
+        item_type = self.schema_tree.GetPyData(item).__class__.__name__
+        self.display.SetLabel("Type: %s" % item_type)
+
+        if item_type == 'Database':
             self._db.select_database(text)
             self.display.SetLabel("db: %s" % text)
-        elif self.schema_tree.is_table(item):
+        elif item_type == 'Table':
             self.display.SetLabel("table: %s" % text)
+        elif item_type == 'Column':
+            self.display.SetLabel("column: %s" % text)
 
     def on_exit(self, event):
         """ Exit application """
