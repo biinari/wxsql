@@ -40,9 +40,6 @@ class SchemaTree(wx.TreeCtrl):
         for database in self.__db.get_databases():
             item = self.AppendItem(self.__root, database)
             self.SetItemHasChildren(item)
-            for container_name in ['Tables']:
-                container = self.AppendItem(item, container_name)
-                self.SetItemHasChildren(container)
 
     def is_database(self, item):
         """ Return True if item is a database. """
@@ -62,14 +59,21 @@ class SchemaTree(wx.TreeCtrl):
         return self.GetItemText(item) == 'Columns' and \
                 self.is_table(self.GetItemParent(item))
 
+    def expand_database(self, item):
+        for container_name in ['Tables']:
+            container = self.AppendItem(item, container_name)
+            self.SetItemHasChildren(container)
+
     def expand_tables(self, item):
         database_name = self.GetItemText(self.GetItemParent(item))
         for table_name in self.__db.get_tables(database_name):
             table = self.AppendItem(item, table_name)
             self.SetItemHasChildren(table)
-            for container_name in ['Columns', 'Indexes']:
-                container = self.AppendItem(table, container_name)
-                self.SetItemHasChildren(container)
+
+    def expand_table(self, item):
+        for container_name in ['Columns', 'Indexes']:
+            container = self.AppendItem(item, container_name)
+            self.SetItemHasChildren(container)
 
     def expand_columns(self, item):
         table = self.GetItemParent(item)
@@ -86,6 +90,10 @@ class SchemaTree(wx.TreeCtrl):
             self.expand_tables(item)
         elif self.is_columns_container(item):
             self.expand_columns(item)
+        elif self.is_database(item):
+            self.expand_database(item)
+        elif self.is_table(item):
+            self.expand_table(item)
 
     def on_collapse_item(self, event):
         """ Collapse an item and reset its children. """
