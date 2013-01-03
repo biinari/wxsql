@@ -5,7 +5,7 @@ import wx
 
 from app.db.mysql import DB
 from app.tree.schema_tree import SchemaTree
-from query_editor import QueryEditorPanel
+from app.editor.editor import QueryEditorPanel
 
 class MainWindow(wx.Frame):
     """ Main Window frame for wxSQL """
