@@ -17,13 +17,11 @@ class Item(object):
         raise NotImplementedError
 
     def collapse(self):
-        """ Collapse item. """
-        self.tree.Collapse(self.item)
+        """ Collapse item and remove children. """
+        self.tree.CollapseAndReset(self.item)
+        self.tree.SetItemHasChildren(item)
 
 class Container(Item):
     """ Abstract Schema Tree container item. """
 
-    def collapse(self):
-        """ Collapse item and remove children. """
-        self.tree.CollapseAndReset(self.item)
-        self.tree.SetItemHasChildren(item)
+    pass
