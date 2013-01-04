@@ -19,7 +19,7 @@ class Item(object):
     def collapse(self):
         """ Collapse item and remove children. """
         self.tree.CollapseAndReset(self.item)
-        self.tree.SetItemHasChildren(item)
+        self.tree.SetItemHasChildren(self.item)
 
 class Container(Item):
     """ Abstract Schema Tree container item. """

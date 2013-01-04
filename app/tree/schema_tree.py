@@ -67,8 +67,8 @@ class SchemaTree(wx.TreeCtrl):
 
         if key == wx.WXK_LEFT:
             item = self.GetSelection()
-            if self.IsExpanded(item):
-                self.Collapse(item)
+            if item and self.IsExpanded(item):
+                self.GetPyData(item).collapse()
                 return
 
         event.Skip()
