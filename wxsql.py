@@ -76,6 +76,8 @@ class MainWindow(wx.Frame):
             self.display.SetLabel("table: %s" % text)
         elif item_type == 'Column':
             self.display.SetLabel("column: %s" % text)
+        elif item_type == 'Index':
+            self.display.SetLabel("index: %s" % text)
 
     def on_exit(self, event):
         """ Exit application """

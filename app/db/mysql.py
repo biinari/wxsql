@@ -35,7 +35,7 @@ class DB(object):
         return [i[0] for i in r]
 
     def get_columns(self, database=None, table=None):
-        """ Return a list of column names in database.table. """
+        """ Return a list of column names in given table. """
         cur = self.conn.cursor()
         if database != None:
             cur.execute("SHOW COLUMNS FROM `%s`.`%s`" % (database, table))
@@ -43,6 +43,17 @@ class DB(object):
             cur.execute("SHOW COLUMNS FROM `%s`" % table)
         r = cur.fetchall()
         cur.close();
+        return [i[0] for i in r]
+    
+    def get_indexes(self, database=None, table=None):
+        """ Return a list of index names in given table. """
+        cur = self.conn.cursor()
+        if database != None:
+            cur.execute("SHOW INDEXES FROM `%s`.`%s`" % (database, table))
+        else:
+            cur.execute("SHOW INDEXES FROM `%s`" % table)
+        r = cur.fetchall()
+        cur.close()
         return [i[0] for i in r]
 
     def escape(self, obj):
