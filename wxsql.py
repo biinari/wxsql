@@ -74,6 +74,8 @@ class MainWindow(wx.Frame):
             self.display.SetLabel("db: %s" % text)
         elif item_type == 'Table':
             self.display.SetLabel("table: %s" % text)
+        elif item_type == 'View':
+            self.display.SetLabel("view: %s" % text)
         elif item_type == 'Column':
             self.display.SetLabel("column: %s" % text)
         elif item_type == 'Index':
