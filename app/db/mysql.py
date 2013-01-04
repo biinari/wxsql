@@ -23,16 +23,25 @@ class DB(object):
         cur.close()
         return [i[0] for i in r]
 
-    def get_tables(self, database=None):
-        """ Return a list of table names in current or given database. """
+    def _get_tables(self, table_type, database=None):
         cur = self.conn.cursor()
         if database != None:
-            cur.execute("SHOW TABLES FROM `%s`" % database)
+            from_db = ' FROM `%s`' % database
         else:
-            cur.execute("SHOW TABLES")
+            from_db = ''
+        cur.execute("SHOW FULL TABLES{} WHERE Table_type='{}'".format(from_db,
+            table_type))
         r = cur.fetchall()
         cur.close()
         return [i[0] for i in r]
+
+    def get_tables(self, database=None):
+        """ Return a list of table names in current or given database. """
+        return self._get_tables('BASE TABLE', database)
+
+    def get_views(self, database=None):
+        """ Return a list of view names in current or given database. """
+        return self._get_tables('VIEW', database)
 
     def get_columns(self, database=None, table=None):
         """ Return a list of column names in given table. """
