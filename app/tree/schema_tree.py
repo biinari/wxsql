@@ -62,17 +62,20 @@ class SchemaTree(wx.TreeCtrl):
             self.__collapsing = False
 
     def on_key(self, event):
-        """ On <Left>, if the current item is expanded, collapse it. """
+        """ Improve on <Left> and <Right> key events. """
         key = event.GetKeyCode()
         item = self.GetSelection()
 
         if key == wx.WXK_LEFT:
+            # If the current item is expanded, collapse it.
             if self.IsExpanded(item):
                 self.GetPyData(item).collapse()
                 return
+            # Inhibit moving up
             if self.GetItemParent(item) == self.GetRootItem():
                 return
         elif key == wx.WXK_RIGHT:
+            # Inhibit moving down
             if not self.ItemHasChildren(item):
                 return
             else:
