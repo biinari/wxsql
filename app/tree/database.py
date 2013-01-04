@@ -24,7 +24,10 @@ class TablesContainer(Container):
     def expand(self):
         """ Expand Tables container. """
         database_name = self.tree.GetItemText(self.tree.GetItemParent(self.item))
-        for table_name in self._db.get_tables(database_name):
+        tables = self._db.get_tables(database_name)
+        if not tables:
+            self.tree.SetItemHasChildren(self.item, False)
+        for table_name in tables:
             table = self.tree.AppendItem(self.item, table_name)
             self.tree.SetItemHasChildren(table)
             self.tree.SetPyData(table, Table(self.tree, table, table_name))
@@ -35,7 +38,10 @@ class ViewsContainer(Container):
     def expand(self):
         """ Expand Views container. """
         database_name = self.tree.GetItemText(self.tree.GetItemParent(self.item))
-        for view_name in self._db.get_views(database_name):
+        views = self._db.get_views(database_name)
+        if not views:
+            self.tree.SetItemHasChildren(self.item, False)
+        for view_name in views:
             view = self.tree.AppendItem(self.item, view_name)
             self.tree.SetItemHasChildren(view)
             self.tree.SetPyData(view, View(self.tree, view, view_name))

@@ -29,7 +29,10 @@ class ColumnsContainer(Container):
         database = self.tree.GetItemParent(self.tree.GetItemParent(table))
         table_name = self.tree.GetItemText(table)
         database_name = self.tree.GetItemText(database)
-        for column_name in self._db.get_columns(database_name, table_name):
+        columns = self._db.get_columns(database_name, table_name)
+        if not columns:
+            self.tree.SetItemHasChildren(self.item, False)
+        for column_name in columns:
             column = self.tree.AppendItem(self.item, column_name)
             self.tree.SetPyData(column, Column(self.tree, column, column_name))
 
@@ -42,6 +45,9 @@ class IndexesContainer(Container):
         database = self.tree.GetItemParent(self.tree.GetItemParent(table))
         table_name = self.tree.GetItemText(table)
         database_name = self.tree.GetItemText(database)
-        for index_name in self._db.get_indexes(database_name, table_name):
+        indexes = self._db.get_indexes(database_name, table_name)
+        if not indexes:
+            self.tree.SetItemHasChildren(self.item, False)
+        for index_name in indexes:
             index = self.tree.AppendItem(self.item, index_name)
             self.tree.SetPyData(index, Index(self.tree, index, index_name))
