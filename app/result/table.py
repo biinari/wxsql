@@ -20,18 +20,20 @@ class ResultTablePanel(wx.Panel):
 
     def set_data(self, description, data):
         """ Display data in table with description used for row headings. """
-        self.grid = wx.GridSizer(len(data) + 1, len(description))
-        self.SetSizer(self.grid)
+        self.grid = wx.GridSizer(len(data) + 1, len(description), 1, 1)
         for heading in description:
-            self.grid.Add(wx.Button(self, label=heading[0]))
+            self.grid.Add(wx.Button(self, label=heading[0]), 0, wx.ALIGN_CENTER)
         for row in data:
             for column in row:
-                self.grid.Add(wx.StaticText(self, label=str(column)))
+                self.grid.Add(wx.StaticText(self, label=str(column)), 0, wx.ALIGN_CENTER)
+        self.SetSizer(self.grid)
+        self.Fit()
 
 def main():
     app = wx.App(False)
     frame = TestFrame(None, title="Results Table", size=(600, 400))
     panel = ResultTablePanel(frame)
+    frame.Show(True)
 
     from app.db.mysql import DB
     db = DB()
@@ -42,8 +44,6 @@ def main():
     cursor.close()
     panel.set_data(description, data)
 
-    frame.Show(True)
-    frame.SetFocus()
     app.MainLoop()
 
 if __name__ == '__main__':
