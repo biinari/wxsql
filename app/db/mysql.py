@@ -17,23 +17,17 @@ class DB(object):
 
     def get_databases(self):
         """ Return a list of database schema names. """
-        cur = self.conn.cursor()
-        cur.execute("SHOW DATABASES")
-        r = cur.fetchall()
-        cur.close()
-        return [i[0] for i in r]
+        result = self.query("SHOW DATABASES")
+        return [i[0] for i in result]
 
     def _get_tables(self, table_type, database=None):
-        cur = self.conn.cursor()
         if database != None:
             from_db = ' FROM `%s`' % database
         else:
             from_db = ''
-        cur.execute("SHOW FULL TABLES{} WHERE Table_type='{}'".format(from_db,
-            table_type))
-        r = cur.fetchall()
-        cur.close()
-        return [i[0] for i in r]
+        result = self.query("SHOW FULL TABLES{} WHERE Table_type='{}'".format(
+            from_db, table_type))
+        return [i[0] for i in result]
 
     def get_tables(self, database=None):
         """ Return a list of table names in current or given database. """
@@ -45,25 +39,21 @@ class DB(object):
 
     def get_columns(self, database=None, table=None):
         """ Return a list of column names in given table. """
-        cur = self.conn.cursor()
         if database != None:
-            cur.execute("SHOW COLUMNS FROM `%s`.`%s`" % (database, table))
+            from_table = "`%s`.`%s`" % (database, table)
         else:
-            cur.execute("SHOW COLUMNS FROM `%s`" % table)
-        r = cur.fetchall()
-        cur.close();
-        return [i[0] for i in r]
+            from_table = "`%s`" % table
+        result = self.query("SHOW COLUMNS FROM {}".format(from_table))
+        return [i[0] for i in result]
     
     def get_indexes(self, database=None, table=None):
         """ Return a list of index names in given table. """
-        cur = self.conn.cursor()
         if database != None:
-            cur.execute("SHOW INDEXES FROM `%s`.`%s`" % (database, table))
+            from_table = "`%s`.`%s`" % (database, table)
         else:
-            cur.execute("SHOW INDEXES FROM `%s`" % table)
-        r = cur.fetchall()
-        cur.close()
-        return [i[0] for i in r]
+            from_table = "`%s`" % table
+        result = self.query("SHOW INDEXES FROM {}".format(from_table))
+        return [i[0] for i in result]
 
     def escape(self, obj):
         """ Escape an object for use in an SQL query. """
@@ -71,9 +61,19 @@ class DB(object):
 
     def select_database(self, database):
         """ Select a database schema. """
-        cur = self.conn.cursor()
-        cur.execute("USE `%s`" % database)
-        cur.close()
+        self.execute("USE `%s`" % database)
+
+    def execute(self, query):
+        cursor = self.conn.cursor()
+        cursor.execute(query)
+        cursor.close()
+
+    def query(self, query):
+        cursor = self.conn.cursor()
+        cursor.execute(query)
+        result = cursor.fetchall()
+        cursor.close()
+        return result
 
     def __del__(self):
         """ Destructor, close connection. """
