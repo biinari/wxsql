@@ -6,6 +6,7 @@ import wx
 from app.db.mysql import DB
 from app.tree.schema_tree import SchemaTree
 from app.editor.editor import QueryEditorPanel
+from app.result.table import ResultTablePanel
 
 class MainWindow(wx.Frame):
     """ Main Window frame for wxSQL """
@@ -22,19 +23,23 @@ class MainWindow(wx.Frame):
     def create_panels(self):
         """ Layout user resizable panels """
         horiz_split = wx.SplitterWindow(self, style=wx.SP_3D)
-        horiz_split.SetMinimumPaneSize(20)
-        left_vert_split = wx.SplitterWindow(horiz_split, style=wx.SP_3D)
-        left_vert_split.SetMinimumPaneSize(20)
-        self.schema_tree = SchemaTree(left_vert_split, db=self._db,
-                size=(200, 300), style=wx.TR_HIDE_ROOT|wx.TR_DEFAULT_STYLE)
-        self.query_editor = QueryEditorPanel(horiz_split)
-        self.display = wx.StaticText(left_vert_split,
+        left_split = wx.SplitterWindow(horiz_split, style=wx.SP_3D)
+        right_split = wx.SplitterWindow(horiz_split, style=wx.SP_3D)
+        self.schema_tree = SchemaTree(left_split, db=self._db,
+                style=wx.TR_HIDE_ROOT|wx.TR_DEFAULT_STYLE)
+        self.display = wx.StaticText(left_split,
                 label="Select a database above")
+        self.query_editor = QueryEditorPanel(right_split)
+        self.results = ResultTablePanel(right_split)
 
         self.schema_tree.Bind(wx.EVT_TREE_SEL_CHANGED, self.on_db_sel_change)
 
-        left_vert_split.SplitHorizontally(self.schema_tree, self.display)
-        horiz_split.SplitVertically(left_vert_split, self.query_editor)
+        left_split.SplitHorizontally(self.schema_tree, self.display, -150)
+        right_split.SplitHorizontally(self.query_editor, self.results, -150)
+        horiz_split.SplitVertically(left_split, right_split)
+        horiz_split.SetMinimumPaneSize(100)
+        left_split.SetMinimumPaneSize(100)
+        right_split.SetMinimumPaneSize(100)
 
     def create_menu(self):
         """ Setup menu bar. """
