@@ -58,7 +58,7 @@ class ResultTablePanel(wx.Panel):
             ascending = not self.sort_ascending
         else:
             ascending = True
-        self.sort_data(column)
+        self.sort_data(column, ascending)
 
 def main():
     app = wx.App(False)
